@@ -220,10 +220,9 @@ p.sub{color:var(--tx2);font-size:14px;margin-top:3px}
 <div class="toast" id="toast" role="status"></div>
 
 <script>
-/* ═══════════════════ PENGATURAN — GANTI BARIS INI ═══════════════════
-   Tempel URL Web App Apps Script kamu (akhiran /exec), contoh:
-   const GAS_URL = 'https://script.google.com/macros/s/AKfycby--3ZyGieW_6uuuugPRZQpZsyyANfUVD1FIwJQALYJ3aq_6e0dPbGTvH9T7ig7Q9jr/exec';
-   Selama masih placeholder, aplikasi berjalan dalam MODE DEMO.        */
+/* ═══════════════════ PENGATURAN — SUDAH TERISI OTOMATIS ═══════════════════
+   URL Web App Apps Script sudah dipasang. Kalau kelak kamu deploy ulang
+   dan URL /exec BERBEDA, ganti hanya baris di bawah ini.                  */
 const GAS_URL = 'https://script.google.com/macros/s/AKfycby--3ZyGieW_6uuuugPRZQpZsyyANfUVD1FIwJQALYJ3aq_6e0dPbGTvH9T7ig7Q9jr/exec';
 /* ════════════════════════════════════════════════════════════════════ */
 
@@ -273,7 +272,13 @@ async function api(action, payload) {
   const res = await fetch(GAS_URL, { method: 'POST', body: body });
   if (!res.ok) throw new Error('Server menolak (HTTP ' + res.status + ')');
   const json = await res.json();
-  if (!json.ok) throw new Error(json.error || 'Terjadi kesalahan di server');
+  if (!json.ok) {
+    let msg = json.error || 'Terjadi kesalahan di server';
+    if (msg.indexOf('Payload bukan JSON') >= 0) {
+      msg += ' — Code.gs kamu masih versi lama. Salin ulang Code.gs terbaru, lalu Deploy > Manage deployments > Edit > New version > Deploy.';
+    }
+    throw new Error(msg);
+  }
   return json.data;
 }
 
@@ -630,11 +635,16 @@ async function vGuru() {
   $app.innerHTML =
     '<div class="row spread" style="margin:18px 0 14px">' +
       '<div><h1 class="title">Panel Guru</h1><p class="sub">Halo, ' + esc(sesi.profil.nama) + '! 👋</p></div>' +
-      '<div class="row"><span class="badge ok">● Online</span><button class="btn danger" id="btnOut">Keluar</button></div>' +
+      '<div class="row"><span class="badge ok">● Online</span><button class="btn" id="btnMusicAdmin" title="Matikan / nyalakan backsound musik game" aria-pressed="' + String(!muted) + '">🎵 Musik: ' + (muted ? 'OFF' : 'ON') + '</button><button class="btn danger" id="btnOut">Keluar</button></div>' +
     '</div>' +
     '<div class="tabs" role="tablist">' + tabs.map((t) => '<button class="tab' + (guruState.tab === t[0] ? ' on' : '') + '" role="tab" data-gtab="' + t[0] + '">' + t[1] + '</button>').join('') + '</div>' +
     '<div id="guruBody"><div class="card" style="text-align:center;color:var(--tx3)">Memuat…</div></div>';
   document.getElementById('btnOut').onclick = () => { if (confirm('Keluar dari sesi guru?')) logout(); };
+  // Fitur admin: matikan / nyalakan backsound musik game (tersimpan otomatis)
+  const mbtn = document.getElementById('btnMusicAdmin');
+  const labMusik = () => { mbtn.textContent = muted ? '🔇 Musik: OFF' : '🎵 Musik: ON'; mbtn.setAttribute('aria-pressed', String(!muted)); };
+  labMusik();
+  mbtn.onclick = () => { setMuted(!muted); labMusik(); toast(muted ? 'Backsound musik dimatikan 🔇' : 'Backsound musik dinyalakan 🎵'); };
   $app.querySelectorAll('[data-gtab]').forEach((b) => (b.onclick = () => { guruState.tab = b.dataset.gtab; render(); }));
   const body = document.getElementById('guruBody');
   if (guruState.tab === 'soal') await guruSoal(body);

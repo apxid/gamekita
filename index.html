@@ -222,9 +222,9 @@ p.sub{color:var(--tx2);font-size:14px;margin-top:3px}
 <script>
 /* ═══════════════════ PENGATURAN — GANTI BARIS INI ═══════════════════
    Tempel URL Web App Apps Script kamu (akhiran /exec), contoh:
-   const GAS_URL = 'https://script.google.com/macros/s/AKfycb.../exec';
+   const GAS_URL = 'https://script.google.com/macros/s/AKfycby--3ZyGieW_6uuuugPRZQpZsyyANfUVD1FIwJQALYJ3aq_6e0dPbGTvH9T7ig7Q9jr/exec';
    Selama masih placeholder, aplikasi berjalan dalam MODE DEMO.        */
-const GAS_URL = 'PASTE_URL_GAS_EXEC_DI_SINI';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycby--3ZyGieW_6uuuugPRZQpZsyyANfUVD1FIwJQALYJ3aq_6e0dPbGTvH9T7ig7Q9jr/exec';
 /* ════════════════════════════════════════════════════════════════════ */
 
 'use strict';
@@ -278,23 +278,50 @@ async function api(action, payload) {
 }
 
 /* ---------- MODE DEMO: database tiruan di localStorage ---------- */
-const DB_KEY = 'gk_demo_db_v1';
+const DB_KEY = 'gk_demo_db_v2';
 function db() {
   let d = null;
   try { d = JSON.parse(localStorage.getItem(DB_KEY) || 'null'); } catch (e) {}
   if (!d) {
     d = {
       config: { pin_guru: '1234' },
-      kelas: [], siswa: [],
-      set_soal: [{ id: 'set_demo', nama: 'Contoh: Pengetahuan Umum', jumlah: 5, dibuat: Date.now() }],
-      soal: [
-        { set_id: 'set_demo', nomor: 1, pertanyaan: 'Ibu kota Provinsi Jawa Barat adalah…', opsi: ['Bandung', 'Semarang', 'Surabaya', 'Serang'], kunci: 'A', waktu: 30 },
-        { set_id: 'set_demo', nomor: 2, pertanyaan: 'Hasil dari 7 × 8 adalah…', opsi: ['48', '54', '56', '64'], kunci: 'C', waktu: 20 },
-        { set_id: 'set_demo', nomor: 3, pertanyaan: 'Planet terdekat dari Matahari adalah…', opsi: ['Venus', 'Merkurius', 'Bumi', 'Mars'], kunci: 'B', waktu: 30 },
-        { set_id: 'set_demo', nomor: 4, pertanyaan: 'Lambang sila ketiga Pancasila adalah…', opsi: ['Bintang', 'Rantai', 'Beringin', 'Padi & Kapas'], kunci: 'C', waktu: 30 },
-        { set_id: 'set_demo', nomor: 5, pertanyaan: 'Hewan pemakan tumbuhan disebut…', opsi: ['Karnivora', 'Omnivora', 'Herbivora', 'Insektivora'], kunci: 'C', waktu: 30 },
+      kelas: [
+        { id: 'kls_demo1', kode: 'GK7K2A', nama: 'Kelas 7A', guru: 'Pak Budi Santoso', dibuat: Date.now() },
+        { id: 'kls_demo2', kode: 'GK8K1B', nama: 'Kelas 8B', guru: 'Bu Sari Wulandari', dibuat: Date.now() },
       ],
-      jawaban: [], hasil: [],
+      siswa: [
+        { id: 'sws_demo1', kelas_kode: 'GK7K2A', nama: 'Aksara Putra', avatar: '🦊', dibuat: Date.now() },
+        { id: 'sws_demo2', kelas_kode: 'GK7K2A', nama: 'Bella Anjani', avatar: '🐱', dibuat: Date.now() },
+        { id: 'sws_demo3', kelas_kode: 'GK7K2A', nama: 'Citra Kirana', avatar: '🐰', dibuat: Date.now() },
+        { id: 'sws_demo4', kelas_kode: 'GK7K2A', nama: 'Dimas Saputra', avatar: '🐯', dibuat: Date.now() },
+        { id: 'sws_demo5', kelas_kode: 'GK7K2A', nama: 'Elok Maharani', avatar: '🦋', dibuat: Date.now() },
+        { id: 'sws_demo6', kelas_kode: 'GK8K1B', nama: 'Fajar Nugroho', avatar: '🐼', dibuat: Date.now() },
+        { id: 'sws_demo7', kelas_kode: 'GK8K1B', nama: 'Gita Lestari', avatar: '🐥', dibuat: Date.now() },
+        { id: 'sws_demo8', kelas_kode: 'GK8K1B', nama: 'Hafiz Rahman', avatar: '🐬', dibuat: Date.now() },
+        { id: 'sws_demo9', kelas_kode: 'GK8K1B', nama: 'Intan Permata', avatar: '🌸', dibuat: Date.now() },
+        { id: 'sws_demo10', kelas_kode: 'GK8K1B', nama: 'Joko Prasetyo', avatar: '🚀', dibuat: Date.now() },
+      ],
+      set_soal: [{ id: 'set_skomp', nama: 'Sistem Komputer', jumlah: 10, dibuat: Date.now() }],
+      soal: [
+        { set_id: 'set_skomp', nomor: 1, pertanyaan: 'Perangkat keras yang berfungsi sebagai "otak" komputer untuk memproses data adalah…', opsi: ['Harddisk', 'Prosesor (CPU)', 'Monitor', 'Keyboard'], kunci: 'B', waktu: 20 },
+        { set_id: 'set_skomp', nomor: 2, pertanyaan: 'Di antara perangkat berikut, yang termasuk perangkat output adalah…', opsi: ['Printer', 'Mouse', 'Scanner', 'Mikrofon'], kunci: 'A', waktu: 20 },
+        { set_id: 'set_skomp', nomor: 3, pertanyaan: 'Shortcut keyboard untuk MENYALIN teks adalah…', opsi: ['Ctrl+V', 'Ctrl+X', 'Ctrl+P', 'Ctrl+C'], kunci: 'D', waktu: 20 },
+        { set_id: 'set_skomp', nomor: 4, pertanyaan: 'Contoh sistem operasi yang bersifat open source (gratis) adalah…', opsi: ['Windows', 'macOS', 'iOS', 'Linux'], kunci: 'D', waktu: 25 },
+        { set_id: 'set_skomp', nomor: 5, pertanyaan: 'Satuan data terkecil pada komputer adalah…', opsi: ['Byte', 'Bit', 'Kilobyte', 'Megabyte'], kunci: 'B', waktu: 20 },
+        { set_id: 'set_skomp', nomor: 6, pertanyaan: 'Memori yang sifatnya sementara dan hilang saat komputer dimatikan adalah…', opsi: ['RAM', 'SSD', 'Flashdisk', 'Harddisk'], kunci: 'A', waktu: 25 },
+        { set_id: 'set_skomp', nomor: 7, pertanyaan: 'Aplikasi yang paling tepat untuk mengolah data angka dan tabel adalah…', opsi: ['Microsoft Word', 'Paint', 'Microsoft Excel', 'Notepad'], kunci: 'C', waktu: 20 },
+        { set_id: 'set_skomp', nomor: 8, pertanyaan: 'Perangkat yang menghubungkan komputer ke jaringan internet adalah…', opsi: ['Modem/Router', 'Speaker', 'Webcam', 'Joystick'], kunci: 'A', waktu: 25 },
+        { set_id: 'set_skomp', nomor: 9, pertanyaan: 'Shortcut keyboard untuk MENYIMPAN dokumen adalah…', opsi: ['Ctrl+S', 'Ctrl+P', 'Ctrl+A', 'Ctrl+F'], kunci: 'A', waktu: 20 },
+        { set_id: 'set_skomp', nomor: 10, pertanyaan: 'Perangkat input untuk menyalin dokumen/gambar fisik menjadi file digital adalah…', opsi: ['Speaker', 'Scanner', 'Proyektor', 'Printer'], kunci: 'B', waktu: 25 },
+      ],
+      jawaban: [
+        { id: 'jwb_demo1', siswa_id: 'sws_demo1', nama_siswa: 'Aksara Putra', kelas_kode: 'GK7K2A', set_id: 'set_skomp', nomor: 1, pilihan: 'B', kunci: 'B', benar: 'BENAR', waktu: Date.now() },
+        { id: 'jwb_demo2', siswa_id: 'sws_demo1', nama_siswa: 'Aksara Putra', kelas_kode: 'GK7K2A', set_id: 'set_skomp', nomor: 2, pilihan: 'B', kunci: 'A', benar: 'SALAH', waktu: Date.now() },
+        { id: 'jwb_demo3', siswa_id: 'sws_demo1', nama_siswa: 'Aksara Putra', kelas_kode: 'GK7K2A', set_id: 'set_skomp', nomor: 3, pilihan: 'D', kunci: 'D', benar: 'BENAR', waktu: Date.now() },
+      ],
+      hasil: [
+        { id: 'hsl_demo1', siswa_id: 'sws_demo1', nama_siswa: 'Aksara Putra', kelas_kode: 'GK7K2A', set_id: 'set_skomp', set_nama: 'Sistem Komputer', total_benar: 2, total_soal: 10, nilai: 20, selesai: Date.now() },
+      ],
     };
     localStorage.setItem(DB_KEY, JSON.stringify(d));
   }
